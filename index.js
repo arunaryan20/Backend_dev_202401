@@ -1,25 +1,31 @@
-// const http=require("http");
-// const PORT=5000;
-
-// const server=http.createServer((req,res)=>{
-//       res.end("Response from server");
-// });
-
-
-const express=require("express");
-const server=express();
+const expresss=require("express");
+const server=expresss();
 
 const PORT=5000;
 
-server.get("/",(req,res)=>{
-      res.send("Response from server by get method");
-});
+const router=require("./route");
+const appRouter=require("./app");
 
-server.get("/",(req,res)=>{
-   res.send("Response from server by post method");
-})
+server.use("/api",router);
+
+const middleware=(req,res,next)=>{
+         console.log("Hello from middleware");
+         next();
+}
+
+server.use("/dept",middleware,appRouter);
+
+// const middlewareFunction=(req,res,next)=>{
+//    console.log("Middleware function");
+//    // res.send("jlksjflk");
+//    next();
+// }
+
+// server.get("/",middlewareFunction,(req,res)=>{
+//    res.send("Response from server");
+// })
 
 
 server.listen(PORT,()=>{
-   console.log(`Server is running on port ${PORT}`);
+   console.log("server is running on PORT--->"+PORT);
 })
