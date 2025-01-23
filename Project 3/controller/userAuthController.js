@@ -1,4 +1,6 @@
 const userProfileModel = require("../models/userProfileModel");
+const bcrypt = require("bcryptjs");
+
 exports.userLogin = async (req, res) => {
   try {
     const { phone, password } = req.body;
@@ -7,11 +9,12 @@ exports.userLogin = async (req, res) => {
     };
 
     const result = await userProfileModel.findOne(filter);
+    const flag = bcrypt.compareSync(password, result.password); // true // false
     if (result) {
-      if (result.password === password) {
+      if (flag) {
         res.status(200).json({ code: 200, message: "Login successfuly" });
-      }else{
-        res.status(200).json({ code: 400, message: "Wrong password" }); 
+      } else {
+        res.status(200).json({ code: 400, message: "Wrong password" });
       }
     } else {
       res.status(200).json({ code: 400, message: "User does not exist" });
