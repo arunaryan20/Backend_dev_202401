@@ -39,6 +39,7 @@ exports.createProfile = async (req, res) => {
 exports.updateProfile = async (req, res) => {
   try {
     const { name, phone } = req.body;
+
     const id = req.params.id;
     const filter = {
       _id: id,
@@ -46,6 +47,7 @@ exports.updateProfile = async (req, res) => {
     const data = {
       name: name,
       phone: phone,
+      image:req.file.filename
     };
     const options = {
       new: true,
@@ -58,6 +60,7 @@ exports.updateProfile = async (req, res) => {
       .json({ code: 500, message: "Internal server error", Error: err });
   }
 };
+
 exports.deleteProfile = async (req, res) => {
   try {
     const { status } = req.body;

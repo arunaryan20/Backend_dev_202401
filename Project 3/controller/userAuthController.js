@@ -1,5 +1,7 @@
 const userProfileModel = require("../models/userProfileModel");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 exports.userLogin = async (req, res) => {
   try {
@@ -12,7 +14,18 @@ exports.userLogin = async (req, res) => {
     const flag = bcrypt.compareSync(password, result.password); // true // false
     if (result) {
       if (flag) {
-        res.status(200).json({ code: 200, message: "Login successfuly" });
+        jwt.sign({ phone: phone },"privateKey", { expiresIn:"1d" },function (err, token) {
+            if (err) {
+              res.status(400).json({ code: 400, message: "Internal server error",Error:err });
+            } else {
+              res.status(200).json({
+                  code: 200,
+                  message: "Login successfuly",
+                  Token: token,
+                });
+            }
+          }
+        );
       } else {
         res.status(200).json({ code: 400, message: "Wrong password" });
       }
