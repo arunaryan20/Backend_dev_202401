@@ -1,20 +1,20 @@
-const userProfileModel = require("../models/userProfileModel");
+const adminProfileModel=require("../../models/adminProfileModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
-exports.userLogin = async (req, res) => {
+exports.adminLogin = async (req, res) => {
   try {
-    const { phone, password } = req.body;
+    const { email, password } = req.body;
     const filter = {
-      phone: phone,
+      email: email,
     };
 
-    const result = await userProfileModel.findOne(filter);
+    const result = await adminProfileModel.findOne(filter);
     const flag = bcrypt.compareSync(password, result.password); // true // false
     if (result) {
       if (flag) {
-        jwt.sign({ userId: result._id },process.env.PRIVATE_KEY, { expiresIn:"1d" },function (err, token) {
+        jwt.sign({ email: email },process.env.PRIVATE_KEY, { expiresIn:"1d" },function (err, token) {
             if (err) {
               res.status(400).json({ code: 400, message: "Internal server error",Error:err });
             } else {
