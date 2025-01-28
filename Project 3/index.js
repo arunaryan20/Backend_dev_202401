@@ -2,11 +2,11 @@ const express=require('express');
 const server=express();
 require("dotenv").config();
 const port=process.env.PORT;
-
+const cookieParser = require("cookie-parser");
 
 // body parser
-server.use(express.json());
-
+server.use(express.json()); 
+server.use(cookieParser()); // Enable cookie parsing middleware
 // Database connection
 const databaseConnection=require("./config/database");
 databaseConnection.dbConnect();

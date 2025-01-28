@@ -18,11 +18,18 @@ exports.userLogin = async (req, res) => {
             if (err) {
               res.status(400).json({ code: 400, message: "Internal server error",Error:err });
             } else {
-              res.status(200).json({
-                  code: 200,
-                  message: "Login successfuly",
-                  Token: token,
+                res.cookie("token",token,{maxAge:24 * 60 * 60 * 1000,
+                  httpOnly: true,              // Accessible only by the web server
+                  secure: true,                // Ensures the cookie is sent over HTTPS
+                  sameSite: "strict",          // Prevents CSRF attacks
                 });
+                res.send({code:200,message:"login successful"});
+
+              // res.status(200).json({
+              //     code: 200,
+              //     message: "Login successfuly",
+              //     Token: token,
+              //   });
             }
           }
         );

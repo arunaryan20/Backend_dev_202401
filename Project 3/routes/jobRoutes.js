@@ -7,6 +7,7 @@ const verifyUser=require("../middleware/authMiddlware");
 
 jobRoutes.get("/job-list",verifyUser.isUser,jobController.jobList);
 jobRoutes.post("/apply-job",verifyUser.isUser,jobController.applyJob);
+jobRoutes.get("/applied-jobs-list",verifyUser.isUser,jobController.getAppliedJob);
 
 
 module.exports=jobRoutes;
